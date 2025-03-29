@@ -12,7 +12,19 @@
 	"pages_build_output_dir": ".vercel/output/static",
 	"observability": {
 		"enabled": true
-	}
+	},
+	"main": "worker.ts",
+	"ai": {
+		// "enabled": true,
+		"binding": "AI_BINDING",
+		// "local_dev_fallback": true
+	},
+	"vars": {
+		"AI": {
+			"binding": "AI",
+			"type": "ai"
+		}
+	},
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
