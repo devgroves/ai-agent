@@ -4,7 +4,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { MDXProvider } from '@mdx-js/react';
-import ReactMarkdown from 'react-markdown';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 // Message type
 type Message = {
@@ -19,6 +20,11 @@ export default function AIAgent() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const convertText = (text: string) => {
+    // Convert text to HTML using a simple regex
+    return text; //.replace(/(?:\r\n|\r|\n)/g, '<br>  ');
+  }
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -40,6 +46,8 @@ export default function AIAgent() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          stream: true,
+          max_tokens: 3000,
           messages: [
             { role: 'system', content: 'You are a helpful assistant.' },
             ...messages,
@@ -73,9 +81,9 @@ export default function AIAgent() {
             >
               <strong>{msg.role === 'user' ? 'You' : 'Assistant'}:</strong>
               <MDXProvider>
-                <ReactMarkdown components={{ p: ({ node, ...props }) => <p className="mt-1" {...props} /> }}>
-                  {msg.content}
-                </ReactMarkdown>
+                <Markdown  remarkPlugins={[remarkGfm]} components={{ p: ({ node, ...props }) => <p className="mt-1" {...props} /> }}>
+                  {convertText(msg.content)}
+                </Markdown>
               </MDXProvider>
             </div>
           ))}
