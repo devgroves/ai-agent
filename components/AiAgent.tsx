@@ -63,9 +63,9 @@ export default function AIAgent() {
   return (
     <div className="w-full h-screen flex flex-col items-center bg-gray-100">
       <div className="w-full max-w-3xl flex flex-col flex-grow bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="p-4 border-b bg-white sticky top-0 z-10">
+        {/* <div className="p-4 border-b bg-white sticky top-0 z-10">
           <h1 className="text-xl font-bold text-center">Cloudflare AI Agent</h1>
-        </div>
+        </div> */}
 
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {messages.map((msg, i) => (
