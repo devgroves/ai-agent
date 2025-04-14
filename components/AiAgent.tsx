@@ -5,7 +5,8 @@
 import { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import rehypeHighlight from 'rehype-highlight';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import 'highlight.js/styles/github.css'; // Choose your preferred theme
 
 // Message type
@@ -63,10 +64,6 @@ export default function AIAgent() {
   return (
     <div className="w-full h-screen flex flex-col items-center bg-gray-100">
       <div className="w-full max-w-3xl flex flex-col flex-grow bg-white shadow-lg rounded-lg overflow-hidden">
-        {/* <div className="p-4 border-b bg-white sticky top-0 z-10">
-          <h1 className="text-xl font-bold text-center">Cloudflare AI Agent</h1>
-        </div> */}
-
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {messages.map((msg, i) => (
             <div
@@ -77,13 +74,18 @@ export default function AIAgent() {
               <strong>{msg.role === 'user' ? 'You' : 'Assistant'}:</strong>
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeHighlight]}
                 components={{
-                  code({ node, inline, className, children, ...props }:any) {
+                  code({ node, inline, className, children, ...props }: any) {
+                    // Using the SyntaxHighlighter component for better code formatting
+                    const language = className?.replace('language-', '') || 'javascript';
                     return !inline ? (
-                      <pre className="bg-black text-white p-3 rounded-md overflow-auto text-sm my-2">
-                        <code className={className} {...props}>{children}</code>
-                      </pre>
+                      <SyntaxHighlighter
+                        language={language}
+                        style={vscDarkPlus} // Choose your theme here
+                        customStyle={{ borderRadius: '8px', padding: '16px' }}
+                      >
+                        {String(children).replace(/\n$/, '')}
+                      </SyntaxHighlighter>
                     ) : (
                       <code className="bg-gray-200 text-red-600 px-1 py-0.5 rounded text-sm">{children}</code>
                     );
