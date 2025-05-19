@@ -17,7 +17,7 @@ export async function POST(req: Request) {
           Authorization: `Bearer ${process.env.CLOUDFLARE_AUTH_TOKEN}`,
           "Content-Type": "application/json"
         },
-        body: aiRequest,
+        body: JSON.stringify({ messages, max_tokens: 2048 }),
       }
     );
 
