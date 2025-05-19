@@ -21,6 +21,7 @@ export async function POST(request: Request) {
     });
 
     const data = await response.json();
+    console.log("response data ", data);
     return NextResponse.json(data);
   } catch (error) {
     console.error("Error calling Cloudflare Worker AI:", error);

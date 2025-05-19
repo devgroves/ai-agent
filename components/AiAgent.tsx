@@ -23,6 +23,11 @@ export default function AIAgent() {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const convertText = (text: string) => {
+    // Convert text to HTML using a simple regex
+    return text; //.replace(/(?:\r\n|\r|\n)/g, '<br>  ');
+  }
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -43,6 +48,8 @@ export default function AIAgent() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          stream: true,
+          max_tokens: 3000,
           messages: [
             { role: 'system', content: 'You are a helpful assistant.' },
             ...messages,
